@@ -1,0 +1,21 @@
+def parse_numbers_from_string(str_input:str) -> set[int]:
+    return {int(x) for x in str_input.split(' ') if x}
+
+
+def main(card_lst:list[str]):
+    points_sum = 0 # Part: 1
+    card_count_lst = [1 for x in range(len(card_lst))] # Part: 2
+
+    for card_indx, card in enumerate(card_lst):
+        winning_number_lst, guessed_number_lst = [parse_numbers_from_string(x) for x in card.split(': ')[1].split(' | ')]
+        card_winning_count = len(guessed_number_lst.intersection(winning_number_lst))
+        
+        # Part: 1
+        points_sum += int(1 * pow(2, card_winning_count-1)) 
+        
+        # Part: 2
+        for x in range(card_indx+1, card_indx + card_winning_count+1):
+            card_count_lst[x] += 1 * card_count_lst[card_indx]
+
+    print(f'Part 1 ==> Total points: {points_sum}')
+    print(f'Part 2 ==> Final count of cards: {sum(card_count_lst)}')
